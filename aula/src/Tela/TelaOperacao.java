@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Tela;
+package tela;
 
-import banco.Fabrica;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,10 +22,19 @@ public class TelaOperacao {
     public static void main(String[] args) throws SQLException {
         Connection conn = null;
         try {
-          //  conn = Fabrica.getConexao();
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bancoTeste", "postgres", "postgres");
 
             String resp = "n";
+            conn.prepareStatement("DROP TABLE IF EXISTS ITEMCONTA").execute();
             
+            conn.prepareStatement("create table itemConta(\n"
+                    + "id serial not null\n"
+                    + ",natureza char\n"
+                    + ",valor numeric(7,2)\n"
+                    + ",conta_id int not null\n"
+                    + ",constraint pk_itemConta primary key (id)\n"
+                    + ",constraint fk_conta foreign key (conta_id) references conta\n"
+                    + ")").execute();
 
             do {
                 
